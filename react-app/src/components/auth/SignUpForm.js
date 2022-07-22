@@ -6,11 +6,11 @@ import { signUp } from '../../store/session';
 const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [first_name, setFirstName] = useState('');
+  const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [picUrl, setPicUrl] = useState('');
+  const [pic_url, setPicUrl] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
@@ -21,7 +21,7 @@ const SignUpForm = () => {
   const onSignUp = async (e) => {
     e.preventDefault();
     if (password === repeatPassword) {
-      const data = await dispatch(signUp(firstName, lastName, username, email, password, picUrl, city, state, country));
+      const data = await dispatch(signUp(first_name, last_name, username, email, password, pic_url, city, state, country));
       if (data) {
         setErrors(data)
       }
@@ -60,8 +60,8 @@ const SignUpForm = () => {
         <input
           type='text'
           name='first_name'
-          onChange={() => setFirstName(e.target.value)}
-          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          value={first_name}
         ></input>
       </div>
       <div>
@@ -69,8 +69,8 @@ const SignUpForm = () => {
         <input
           type='text'
           name='last_name'
-          onChange={() => setLastName(e.target.value)}
-          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          value={last_name}
         ></input>
       </div>
       <div>
@@ -115,31 +115,31 @@ const SignUpForm = () => {
         <input
           type='radio'
           name='pic_url'
-          onChange={() => setPicUrl(e.target.value)}
+          onChange={(e) => setPicUrl(e.target.value)}
           value='https://cdn.pastemagazine.com/www/articles/2021/06/28/dogmeat_passing_main.jpg'
         ></input>
         <input
           type='radio'
           name='pic_url'
-          onChange={() => setPicUrl(e.target.value)}
+          onChange={(e) => setPicUrl(e.target.value)}
           value='https://static.wikia.nocookie.net/fallout/images/e/ed/FO01_NPC_Aradesh_B.png/revision/latest?cb=20110406051919'
         ></input>
         <input
           type='radio'
           name='pic_url'
-          onChange={() => setPicUrl(e.target.value)}
+          onChange={(e) => setPicUrl(e.target.value)}
           value='https://i.ytimg.com/vi/kjLUzm4tbSc/maxresdefault.jpg'
         ></input>
         <input
           type='radio'
           name='pic_url'
-          onChange={() => setPicUrl(e.target.value)}
+          onChange={(e) => setPicUrl(e.target.value)}
           value='https://static.wikia.nocookie.net/fallout/images/a/ae/FO01_NPC_Tandi_N.png/revision/latest?cb=20110105032751'
         ></input>
         <input
           type='radio'
           name='pic_url'
-          onChange={() => setPicUrl(e.target.value)}
+          onChange={(e) => setPicUrl(e.target.value)}
           value='https://static.wikia.nocookie.net/fallout/images/1/14/Bittercup.jpg/revision/latest?cb=20101221185412'
         ></input>
       </div>
@@ -148,7 +148,7 @@ const SignUpForm = () => {
         <input
           type='text'
           name='city'
-          onChange={setCity}
+          onChange={(e) => setCity(e.target.value)}
           value={city}
         ></input>
       </div>
@@ -157,7 +157,7 @@ const SignUpForm = () => {
         <input
           type='text'
           name='state'
-          onChange={setState}
+          onChange={(e) => setState(e.target.value)}
           value={state}
         ></input>
       </div>
@@ -166,7 +166,7 @@ const SignUpForm = () => {
         <input
           type='text'
           name='country'
-          onChange={setCountry}
+          onChange={(e) => setCountry(e.target.value)}
           value={country}
         ></input>
       </div>
