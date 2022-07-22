@@ -5,6 +5,7 @@ from app.models import User
 user_routes = Blueprint('users', __name__)
 
 
+# use @login_required for routes you must be logged in for
 @user_routes.route('/')
 @login_required
 def users():

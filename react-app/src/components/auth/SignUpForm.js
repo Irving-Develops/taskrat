@@ -6,8 +6,14 @@ import { signUp } from '../../store/session';
 const SignUpForm = () => {
   const [errors, setErrors] = useState([]);
   const [username, setUsername] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [picUrl, setPicUrl] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [country, setCountry] = useState('');
   const [repeatPassword, setRepeatPassword] = useState('');
   const user = useSelector(state => state.session.user);
   const dispatch = useDispatch();
@@ -15,7 +21,7 @@ const SignUpForm = () => {
   const onSignUp = async (e) => {
     e.preventDefault();
     if (password === repeatPassword) {
-      const data = await dispatch(signUp(username, email, password));
+      const data = await dispatch(signUp(firstName, lastName, username, email, password, picUrl, city, state, country));
       if (data) {
         setErrors(data)
       }
@@ -48,6 +54,24 @@ const SignUpForm = () => {
         {errors.map((error, ind) => (
           <div key={ind}>{error}</div>
         ))}
+      </div>
+      <div>
+        <label>First Name</label>
+        <input
+          type='text'
+          name='first_name'
+          onChange={() => setFirstName(e.target.value)}
+          value={firstName}
+        ></input>
+      </div>
+      <div>
+        <label>Last Name</label>
+        <input
+          type='text'
+          name='last_name'
+          onChange={() => setLastName(e.target.value)}
+          value={lastName}
+        ></input>
       </div>
       <div>
         <label>User Name</label>
@@ -84,6 +108,66 @@ const SignUpForm = () => {
           onChange={updateRepeatPassword}
           value={repeatPassword}
           required={true}
+        ></input>
+      </div>
+      <div>
+        <label>Pic Url</label>
+        <input
+          type='radio'
+          name='pic_url'
+          onChange={() => setPicUrl(e.target.value)}
+          value='https://cdn.pastemagazine.com/www/articles/2021/06/28/dogmeat_passing_main.jpg'
+        ></input>
+        <input
+          type='radio'
+          name='pic_url'
+          onChange={() => setPicUrl(e.target.value)}
+          value='https://static.wikia.nocookie.net/fallout/images/e/ed/FO01_NPC_Aradesh_B.png/revision/latest?cb=20110406051919'
+        ></input>
+        <input
+          type='radio'
+          name='pic_url'
+          onChange={() => setPicUrl(e.target.value)}
+          value='https://i.ytimg.com/vi/kjLUzm4tbSc/maxresdefault.jpg'
+        ></input>
+        <input
+          type='radio'
+          name='pic_url'
+          onChange={() => setPicUrl(e.target.value)}
+          value='https://static.wikia.nocookie.net/fallout/images/a/ae/FO01_NPC_Tandi_N.png/revision/latest?cb=20110105032751'
+        ></input>
+        <input
+          type='radio'
+          name='pic_url'
+          onChange={() => setPicUrl(e.target.value)}
+          value='https://static.wikia.nocookie.net/fallout/images/1/14/Bittercup.jpg/revision/latest?cb=20101221185412'
+        ></input>
+      </div>
+      <div>
+        <label>City</label>
+        <input
+          type='text'
+          name='city'
+          onChange={setCity}
+          value={city}
+        ></input>
+      </div>
+      <div>
+        <label>State</label>
+        <input
+          type='text'
+          name='state'
+          onChange={setState}
+          value={state}
+        ></input>
+      </div>
+      <div>
+        <label>Country</label>
+        <input
+          type='text'
+          name='country'
+          onChange={setCountry}
+          value={country}
         ></input>
       </div>
       <button type='submit'>Sign Up</button>

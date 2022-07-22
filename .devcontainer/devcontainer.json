@@ -1,18 +1,19 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.224.3/containers/python-3
+// this is mostly for M1 users
 {
 	"name": "Python 3",
 	"build": {
 		"dockerfile": "Dockerfile",
 		"context": "..",
-		"args": { 
+		"args": {
 			"VARIANT": "3.9",
 			"NODE_VERSION": "16"
 		}
 	},
 
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
+	"settings": {
 		// "python.defaultInterpreterPath": "/usr/local/bin/python",
 		// "python.linting.enabled": true,
 		// "python.linting.pylintEnabled": true,

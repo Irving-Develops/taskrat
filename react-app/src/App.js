@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import LoginForm from './components/auth/LoginForm';
 import SignUpForm from './components/auth/SignUpForm';
 import NavBar from './components/NavBar';
+// protected route = custom component that will return a user to hompage if they are not logged in
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import UsersList from './components/UsersList';
 import User from './components/User';
@@ -14,6 +15,8 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // not returning a promise, it's an IIFE
+    //this runs to see if there is a currently logged in user
     (async() => {
       await dispatch(authenticate());
       setLoaded(true);

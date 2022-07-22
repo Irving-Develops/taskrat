@@ -7,6 +7,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 auth_routes = Blueprint('auth', __name__)
 
 
+# good idea to export this or copy it for error handling on other route pages
 def validation_errors_to_error_messages(validation_errors):
     """
     Simple function that turns the WTForms validation errors into a simple list
@@ -54,22 +55,33 @@ def logout():
     return {'message': 'User logged out'}
 
 
+# might have to change this route
+    # this is a great example of a post route
 @auth_routes.route('/signup', methods=['POST'])
 def sign_up():
     """
     Creates a new user and logs them in
     """
     form = SignUpForm()
+    # this line adds a csrf token cookie to the form
+        # NEED THIS FOR FORMS (?)
     form['csrf_token'].data = request.cookies['csrf_token']
     if form.validate_on_submit():
         user = User(
+            first_name=form.data['firstName'],
+            last_name=form.data['lastName'],
             username=form.data['username'],
             email=form.data['email'],
-            password=form.data['password']
+            password=form.data['password'],
+            pic_url=form.data['picUrl'],
+            city=form.data['city'],
+            state=form.data['state'],
+            country=form.data['country'],
         )
         db.session.add(user)
         db.session.commit()
         login_user(user)
+        # NOTE: now we are done with jinja, we will only be returning dicts from backend routes
         return user.to_dict()
     return {'errors': validation_errors_to_error_messages(form.errors)}, 401
 

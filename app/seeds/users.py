@@ -4,11 +4,11 @@ from app.models import db, User
 # Adds a demo user, you can add other users here if you want
 def seed_users():
     demo = User(
-        username='Demo', email='demo@aa.io', password='password')
+        first_name='Demo', last_name='Lition', username='demo', pic_url='https://files.slack.com/files-pri/T03GU501J-F03QN5U2NP5/fallout-vault-boy-sphere-by-polishxcii-on-deviantart.png', email='demo@aa.io', password='password', city='New Vegas', state='Nevada', country='U.S.A.')
     marnie = User(
-        username='marnie', email='marnie@aa.io', password='password')
+        first_name='Marnie', last_name='Lition', username='marnie', pic_url='https://files.slack.com/files-pri/T03GU501J-F03QN5U2NP5/fallout-vault-boy-sphere-by-polishxcii-on-deviantart.png', email='marnie@aa.io', password='password', city='New Vegas', state='Nevada', country='U.S.A.')
     bobbie = User(
-        username='bobbie', email='bobbie@aa.io', password='password')
+        first_name='Bobbie', last_name='Lition', username='bobbie', pic_url='https://files.slack.com/files-pri/T03GU501J-F03QN5U2NP5/fallout-vault-boy-sphere-by-polishxcii-on-deviantart.png', email='bobbie@aa.io', password='password', city='New Vegas', state='Nevada', country='U.S.A.')
 
     db.session.add(demo)
     db.session.add(marnie)
