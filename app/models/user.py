@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
 
+
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
@@ -17,6 +18,9 @@ class User(db.Model, UserMixin):
     state = db.Column(db.String(50), nullable=False)
     country = db.Column(db.String(50), nullable=False)
     bio = db.Column(db.String(2000), nullable=True)
+
+
+    tasks = db.relationship('Task', back_populates="users")
 
 
     @property
@@ -43,3 +47,41 @@ class User(db.Model, UserMixin):
             'country': self.country,
             'bio': self.bio,
         }
+
+
+class Task(db.Model):
+  __tablename__ = "tasks"
+
+  id = db.Column(db.Integer, primary_key=True)
+  title = db.Column(db.String(50), nullable=False)
+  description = db.Column(db.String(2000), nullable=False)
+  city = db.Column(db.String(50), nullable=False)
+  state = db.Column(db.String(50), nullable=False)
+  country = db.Column(db.String(50), nullable=False)
+  price = db.Column(db.Integer, nullable=False)
+  poster_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+  tasker_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+  danger_level = db.Column(db.Integer, nullable=False)
+  available = db.Column(db.Boolean, nullable=False)
+  completed = db.Column(db.Boolean, nullable=False)
+  created_at = db.Column(db.Date, nullable=False)
+
+  users = db.relationship('User', back_populates="tasks")
+
+
+  def to_dict(self):
+    return {
+      'id': self.id,
+      'title': self.title,
+      'description': self.description,
+      'city': self.city,
+      'state': self.state,
+      'country': self.country,
+      'price': self.price,
+      'poster_id': self.poster_id,
+      'tasker_id': self.tasker_id,
+      'danger_level': self.danger_level,
+      'available': self.available,
+      'completed': self.completed,
+      'created_at': self.created_at
+    }
