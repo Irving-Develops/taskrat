@@ -2,7 +2,12 @@ from .db import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
-
+task_tags = db.Table(
+  "task_tags",
+  db.Model.metadata,
+  db.Column("tagId", db.Integer, db.ForeignKey("tags.id"), primary_key=True),
+  db.Column("taskId", db.Integer, db.ForeignKey("tasks.id"), primary_key=True)
+)
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -67,7 +72,8 @@ class Task(db.Model):
   created_at = db.Column(db.Date, nullable=False)
 
   users = db.relationship('User', back_populates="tasks")
-  task_reviews = db.relationship('Review', back_populates="reviews_task")
+  task_reviews = db.relationship('Review', back_populates="reviews_task", cascade="all, delete")
+  tags = db.relationship('Tag', secondary=task_tags,  back_populates="tasks")
 
   def to_dict(self):
     return {
@@ -110,3 +116,14 @@ class Review(db.Model):
       'task_id': self.task_id,
       'created_at': self.created_at,
     }
+
+
+class Tag(db.Model):
+  __tablename__ = "tags"
+
+  id = db.Column(db.Integer, primary_key=True)
+  type = db.Column(db.String(50), nullable=False)
+  description = db.Column(db.String(255))
+
+  tasks = db.relationship('Task', secondary=task_tags,  back_populates="tags")
+
