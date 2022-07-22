@@ -21,7 +21,7 @@ class User(db.Model, UserMixin):
 
 
     tasks = db.relationship('Task', back_populates="users")
-
+    reviews = db.relationship('Review', back_populates="users_reviews")
 
     @property
     def password(self):
@@ -67,7 +67,7 @@ class Task(db.Model):
   created_at = db.Column(db.Date, nullable=False)
 
   users = db.relationship('User', back_populates="tasks")
-
+  task_reviews = db.relationship('Review', back_populates="reviews_task")
 
   def to_dict(self):
     return {
@@ -84,4 +84,29 @@ class Task(db.Model):
       'available': self.available,
       'completed': self.completed,
       'created_at': self.created_at
+    }
+
+class Review(db.Model):
+  __tablename__ = "reviews"
+
+  id = db.Column(db.Integer, primary_key=True)
+  rating = db.Column(db.Integer, nullable=False)
+  comment = db.Column(db.String(500), nullable=False)
+  tasker_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+  poster_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+  task_id = db.Column(db.Integer, db.ForeignKey("tasks.id"), nullable=False)
+  created_at = db.Column(db.Date, nullable=False)
+
+  users_reviews = db.relationship('User', back_populates="reviews")
+  reviews_task = db.relationship('Task', back_populates="task_reviews")
+
+  def to_dict(self):
+    return {
+      'id': self.id,
+      'rating': self.rating,
+      'comment': self.comment,
+      'tasker_id': self.tasker_id,
+      'poster_id': self.poster_id,
+      'task_id': self.task_id,
+      'created_at': self.created_at,
     }
