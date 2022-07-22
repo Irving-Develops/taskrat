@@ -127,3 +127,10 @@ class Tag(db.Model):
 
   tasks = db.relationship('Task', secondary=task_tags,  back_populates="tags")
 
+  def to_dict(self):
+    return {
+      'id': self.id,
+      'type': self.type,
+      'description': self.description
+    }
+
