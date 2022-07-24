@@ -5,8 +5,8 @@ from flask_login import UserMixin
 task_tags = db.Table(
   "task_tags",
   db.Model.metadata,
-  db.Column("tagId", db.Integer, db.ForeignKey("tags.id"), primary_key=True),
-  db.Column("taskId", db.Integer, db.ForeignKey("tasks.id"), primary_key=True)
+  db.Column("tag_id", db.Integer, db.ForeignKey("tags.id"), primary_key=True),
+  db.Column("task_id", db.Integer, db.ForeignKey("tasks.id"), primary_key=True)
 )
 
 class User(db.Model, UserMixin):
@@ -24,9 +24,10 @@ class User(db.Model, UserMixin):
     country = db.Column(db.String(50), nullable=False)
     bio = db.Column(db.String(2000), nullable=True)
 
-
+    #relationships
     tasks = db.relationship('Task', back_populates="users")
     reviews = db.relationship('Review', back_populates="users_reviews")
+    bookings = db.relationship('Booking', back_populates='tasker')
 
     @property
     def password(self):
@@ -65,15 +66,15 @@ class Task(db.Model):
   country = db.Column(db.String(50), nullable=False)
   price = db.Column(db.Integer, nullable=False)
   poster_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-  tasker_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
   danger_level = db.Column(db.Integer, nullable=False)
-  available = db.Column(db.Boolean, nullable=False)
-  completed = db.Column(db.Boolean, nullable=False)
+  available = db.Column(db.Boolean, nullable=False, default=True)
   created_at = db.Column(db.Date, nullable=False)
 
+  #relationships
   users = db.relationship('User', back_populates="tasks")
   task_reviews = db.relationship('Review', back_populates="reviews_task", cascade="all, delete")
   tags = db.relationship('Tag', secondary=task_tags,  back_populates="tasks")
+  booking = db.relationship('Booking', back_populates='task')
 
   def to_dict(self):
     return {
@@ -85,10 +86,8 @@ class Task(db.Model):
       'country': self.country,
       'price': self.price,
       'poster_id': self.poster_id,
-      'tasker_id': self.tasker_id,
       'danger_level': self.danger_level,
       'available': self.available,
-      'completed': self.completed,
       'created_at': self.created_at
     }
 
@@ -99,10 +98,10 @@ class Review(db.Model):
   rating = db.Column(db.Integer, nullable=False)
   comment = db.Column(db.String(500), nullable=False)
   tasker_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-  poster_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
   task_id = db.Column(db.Integer, db.ForeignKey("tasks.id"), nullable=False)
   created_at = db.Column(db.Date, nullable=False)
 
+  #relationships
   users_reviews = db.relationship('User', back_populates="reviews")
   reviews_task = db.relationship('Task', back_populates="task_reviews")
 
@@ -112,7 +111,6 @@ class Review(db.Model):
       'rating': self.rating,
       'comment': self.comment,
       'tasker_id': self.tasker_id,
-      'poster_id': self.poster_id,
       'task_id': self.task_id,
       'created_at': self.created_at,
     }
@@ -125,6 +123,7 @@ class Tag(db.Model):
   type = db.Column(db.String(50), nullable=False)
   description = db.Column(db.String(255))
 
+  #relationships
   tasks = db.relationship('Task', secondary=task_tags,  back_populates="tags")
 
   def to_dict(self):
@@ -134,3 +133,23 @@ class Tag(db.Model):
       'description': self.description
     }
 
+
+class Booking(db.Model):
+  __tablename__ = 'bookings'
+
+  id = db.Column(db.Integer, primary_key=True)
+  completed = db.Column(db.Boolean, nullable=False, default=False)
+  tasker_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+  task_id = db.Column(db.Integer, db.ForeignKey('tasks.id'), nullable=False)
+
+  #relationships
+  tasker = db.relationship('User', back_populates='bookings')
+  task = db.relationship('Task', back_populates='booking')
+
+  def to_dict(self):
+    return {
+      'id': self.id,
+      'completed': self.completed,
+      'tasker_id': self.tasker_id,
+      'task_id': self.task_id
+    }
