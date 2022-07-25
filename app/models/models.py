@@ -2,7 +2,6 @@ from .db import db
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-# from alembic import op
 
 task_tags = db.Table(
   "task_tags",
@@ -10,17 +9,6 @@ task_tags = db.Table(
   db.Column("tag_id", db.Integer, db.ForeignKey("tags.id"), primary_key=True),
   db.Column("task_id", db.Integer, db.ForeignKey("tasks.id"), primary_key=True),
 )
-
-# op.bulk_insert(task_tags,
-#     [
-#         {'tag_id':1, 'task_id':1},
-#         {'tag_id':2, 'task_id':1},
-#         {'tag_id':6, 'task_id':2},
-#         {'tag_id':2, 'task_id':2},
-#         {'tag_id':2, 'task_id':3},
-#         {'tag_id':5, 'task_id':3},
-#     ]
-# )
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
@@ -112,7 +100,7 @@ class Review(db.Model):
   comment = db.Column(db.String(500), nullable=False)
   tasker_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
   task_id = db.Column(db.Integer, db.ForeignKey("tasks.id"), nullable=False)
-  created_at = db.Column(db.Date, nullable=False)
+  created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
   #relationships
   users_reviews = db.relationship('User', back_populates="reviews")
