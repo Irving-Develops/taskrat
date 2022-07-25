@@ -69,3 +69,10 @@ def edit_task(id):
     db.session.commit()
     return task.to_dict()
   return { 'errors' : validation_errors_to_error_messages(form.errors) }, 400
+
+@task_routes.route('/<int:id>', methods=['DELETE'])
+def delete_task(id):
+  task = Task.query.get(id)
+  db.session.delete(task)
+  db.session.commit()
+  return task.to_dict()
