@@ -1,2 +1,3 @@
 from .db import db
-from .user import User
+from .models import User, Tag, Task, Review, Booking, task_tags
+
