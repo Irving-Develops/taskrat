@@ -1,5 +1,5 @@
 from app.models import db, Tag
-
+from .tasks import task1, task2, task3
 
 def seed_tags():
     guns = Tag(type="Guns", description="Accuracy and damage with every kind of conventional firearm, from pistols and rifles to miniguns.")

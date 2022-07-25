@@ -1,4 +1,4 @@
-from app.models import db, Task
+from app.models import db, Task, Tag
 from datetime import datetime
 
 def seed_tasks():
@@ -36,6 +36,7 @@ def seed_tasks():
     danger_level=4,
     )
 
+    
     db.session.add(task1)
     db.session.add(task2)
     db.session.add(task3)
@@ -47,3 +48,11 @@ def undo_tasks():
     db.session.execute('TRUNCATE tasks RESTART IDENTITY CASCADE;')
     db.session.commit()
 
+
+
+    task1.tags.append(guns)
+    task1.tags.append(explosives)
+    task2.tags.append(stealth)
+    task2.tags.append(explosives)
+    task3.tags.append(explosives)
+    task3.tags.append(survival)
