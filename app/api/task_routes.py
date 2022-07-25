@@ -21,7 +21,7 @@ def single_task(id):
 
 @task_routes.route('/new', methods=["GET", "POST"])
 def create_task():
-
+  """This route returns a form for a new task and posts a new task"""
   form = TaskForm()
   form['csrf_token'].data = request.cookies['csrf_token']
   if form.validate_on_submit():
@@ -44,6 +44,7 @@ def create_task():
 
 @task_routes.route('/<int:id>/edit', methods=['PUT'])
 def edit_task(id):
+  """This route let's you edit a specific task"""
   task = Task.query.get(id)
   form = TaskForm()
   form['csrf_token'].data = request.cookies['csrf_token']
@@ -72,6 +73,7 @@ def edit_task(id):
 
 @task_routes.route('/<int:id>', methods=['DELETE'])
 def delete_task(id):
+  """This route lets you delete a specific task"""
   task = Task.query.get(id)
   db.session.delete(task)
   db.session.commit()
