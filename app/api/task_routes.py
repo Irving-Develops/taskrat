@@ -40,3 +40,34 @@ def create_task():
     return task.to_dict()
 
   return { 'errors' : validation_errors_to_error_messages(form.errors) }, 400
+
+
+@task_routes.route('/<int:id>/edit', methods=['PUT'])
+def edit_task(id):
+  task = Task.query.get(id)
+  # data = request.json
+  form = TaskForm()
+  form['csrf_token'].data = request.cookies['csrf_token']
+  if form.validate_on_submit():
+    title = form.data["title"],
+    description = form.data["description"],
+    city = form.data["city"],
+    state = form.data["state"],
+    country = form.data["country"],
+    price = form.data["price"],
+    poster_id = form.data["poster_id"],
+    danger_level = form.data["danger_level"]
+
+    task.title = title
+    task.description = description
+    task.city = city
+    task.state = state
+    task.country = country
+    task.price = price
+    task.poster_id = poster_id
+    task.danger_level = danger_level
+
+    print("THIS IS THE TASK" + task)
+    db.session.commit()
+    return task.to_dict()
+  return { 'errors' : validation_errors_to_error_messages(form.errors) }, 400
