@@ -45,7 +45,6 @@ def create_task():
 @task_routes.route('/<int:id>/edit', methods=['PUT'])
 def edit_task(id):
   task = Task.query.get(id)
-  # data = request.json
   form = TaskForm()
   form['csrf_token'].data = request.cookies['csrf_token']
   if form.validate_on_submit():
@@ -67,7 +66,6 @@ def edit_task(id):
     task.poster_id = poster_id
     task.danger_level = danger_level
 
-    print("THIS IS THE TASK" + task)
     db.session.commit()
     return task.to_dict()
   return { 'errors' : validation_errors_to_error_messages(form.errors) }, 400
