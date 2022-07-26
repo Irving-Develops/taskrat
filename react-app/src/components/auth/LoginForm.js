@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { login } from '../../store/session';
+import { login, demoLogin } from '../../store/session';
 
 const LoginForm = () => {
   const [errors, setErrors] = useState([]);
@@ -28,6 +28,11 @@ const LoginForm = () => {
 
   if (user) {
     return <Redirect to='/' />;
+  }
+
+  const handleDemoLogin = async (e) => {
+    e.preventDefault()
+    return dispatch(demoLogin())
   }
 
   return (
@@ -57,6 +62,7 @@ const LoginForm = () => {
           onChange={updatePassword}
         />
         <button type='submit'>Login</button>
+        <button onClick={(e) => handleDemoLogin(e)}> Demo User </button>
       </div>
     </form>
   );
