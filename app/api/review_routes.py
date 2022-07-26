@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request
 from app.models import Review, db
 from app.forms import ReviewForm
 from flask_login import current_user
@@ -15,15 +15,15 @@ def reviews():
 @review_routes.route('/', methods=['POST'])
 def new_review():
   form = ReviewForm()
-
+  print(form, 'backend form')
   form['csrf_token'].data = request.cookies['csrf_token']
 
   if form.validate_on_submit():
     review = Review(
       rating=form.data['rating'],
       comment=form.data['comment'],
-      tasker_id=current_user.id,
-      task_id=1
+      tasker_id=form.data['tasker_id'],
+      task_id=form.data['task_id']
     )
     db.session.add(review)
     db.session.commit()
